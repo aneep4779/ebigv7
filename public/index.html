@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-BIG IPGKDA | Live Assessment</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;700;800&display=swap');
+        body { font-family: 'Sora', sans-serif; background: #f1f5f9; }
+        .bento { background: white; border-radius: 20px; padding: 20px; border: 1px solid #e2e8f0; }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-4xl mx-auto space-y-6">
+        <header class="text-center py-8">
+            <h1 class="text-3xl font-extrabold text-slate-900">e-BIG <span class="text-indigo-600">IPGKDA</span></h1>
+            <p class="text-sm font-bold text-slate-500 uppercase">Pentaksiran Berterusan MPU3212</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bento shadow-sm">
+                <h3 class="text-xs font-black uppercase text-slate-400 mb-4">Carian Pelajar</h3>
+                <input type="text" id="no_kp" class="w-full p-4 bg-slate-100 rounded-xl font-bold" placeholder="Masukkan No. KP">
+            </div>
+
+            <div class="bento bg-indigo-600 text-white">
+                <h3 class="text-xs font-black uppercase opacity-70 mb-2">Info Tugasan</h3>
+                <ul class="text-[10px] space-y-1 font-bold">
+                    <li>Tugasan 1: Kuiz (10%)</li>
+                    <li>Tugasan 2: Amali I (20%)</li>
+                    <li>Tugasan 3: Amali II (70%)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bento space-y-4">
+            <h3 class="font-black text-slate-800 border-b pb-2">Borang Pemarkahan Live</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div><label class="text-[10px] font-bold">Kuiz I (5%)</label><input type="number" id="t1_1" class="w-full p-3 border rounded-lg"></div>
+                <div><label class="text-[10px] font-bold">Kuiz II (5%)</label><input type="number" id="t1_2" class="w-full p-3 border rounded-lg"></div>
+                <div><label class="text-[10px] font-bold">HP4 (10%)</label><input type="number" id="t2_1" class="w-full p-3 border rounded-lg"></div>
+                <div><label class="text-[10px] font-bold">HP5 (10%)</label><input type="number" id="t2_2" class="w-full p-3 border rounded-lg"></div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div><label class="text-[10px] font-bold">HP3 (25%)</label><input type="number" id="t3_1" class="w-full p-3 border rounded-lg"></div>
+                <div><label class="text-[10px] font-bold">HP8 IND (15%)</label><input type="number" id="t3_2" class="w-full p-3 border rounded-lg"></div>
+                <div><label class="text-[10px] font-bold">HP8 KUM (30%)</label><input type="number" id="t3_3" class="w-full p-3 border rounded-lg"></div>
+            </div>
+            <button onclick="simpan()" class="w-full bg-slate-900 text-white py-4 rounded-xl font-black mt-4 hover:bg-indigo-600 transition">SIMPAN MARKAH LIVE</button>
+        </div>
+    </div>
+
+    <script>
+        async function simpan() {
+            const payload = {
+                action: "update_mark",
+                no_kp: document.getElementById('no_kp').value,
+                marks: {
+                    t1_1: document.getElementById('t1_1').value,
+                    t1_2: document.getElementById('t1_2').value,
+                    t2_1: document.getElementById('t2_1').value,
+                    t2_2: document.getElementById('t2_2').value,
+                    t3_1: document.getElementById('t3_1').value,
+                    t3_2: document.getElementById('t3_2').value,
+                    t3_3: document.getElementById('t3_3').value
+                }
+            };
+            const response = await fetch('/api/gateway', { method: 'POST', body: JSON.stringify(payload) });
+            const resData = await response.json();
+            alert("Status: " + resData.message);
+        }
+    </script>
+</body>
+</html>
